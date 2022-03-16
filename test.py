@@ -9,14 +9,14 @@ WINDOW_SIZE = (1000 // BOARD_SIZE) * BOARD_SIZE
 
 def fill(surface, colour):
     w, h = pg.Surface.get_size(surface)
-
     r, g, b = colour
     for x in range(w):
         for y in range(h):
             if pg.Surface.get_at(surface, (x, y)) == (0, 0, 0):
                 pg.Surface.set_at(surface, (x, y), pg.Color(r, g, b))
             elif pg.Surface.get_at(surface, (x, y)) == (255, 255, 255):
-                pg.Surface.set_at(surface, (x, y), pg.Color(0, 0, 0))
+                pg.Surface.set_at(
+                    surface, (x, y), pg.Color(255-r, 255-g, 255-b))
 
 
 class Point():
@@ -43,12 +43,10 @@ class Board():
 
     def draw_bishop(self, x, y):
         bishopImage = pg.image.load(
-            r'/Users/maxscullion/Projects/pgChess/bishop.png')
+            r'/Users/maxscullion/Projects/PygameChess/bishop.png')
         fill(bishopImage, (255, 255, 255))
-        bishopImage = pg.transform.scale(bishopImage, (94, 94))
+        bishopImage = pg.transform.scale(bishopImage, (100, 100))
         SCREEN.blit(bishopImage, (x, y))
-
-#blocksize = 20
 
 
 if __name__ == "__main__":
@@ -61,7 +59,7 @@ if __name__ == "__main__":
     run = True
     while run:
         test.draw_grid()
-        test.draw_bishop(1, 1)
+        test.draw_bishop(0, 0)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 run = False

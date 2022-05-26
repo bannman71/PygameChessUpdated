@@ -1,0 +1,36 @@
+  Private Function FENstring(ByVal Board(,) As Char) As Char(,) 'this nedsw ork please do the fnuctino -Banzaddy71 ' ok
+        Dim ycount As Integer = 1
+        Dim xcount As Integer = 1
+        Dim isOk As Boolean = False
+        Dim FEN As String = "wwww/wwww/4/4/4/4/bbbb/bbbb/w" 'ReadLine()
+        Dim i As Integer = 0
+
+        While isOk = False
+            If Not FEN(i) = "/" Then
+                If ycount Mod 2 = 1 Then ' if odd
+                    Board(2 * xcount, ycount) = FEN(i)
+                ElseIf ycount Mod 2 = 0 Then ' if even
+                    Board((2 * xcount) - 1, ycount) = FEN(i)
+                End If
+
+            End If
+            If Asc(FEN(i)) - 48 > 0 And Asc(FEN(i)) - 48 <= 8 Then
+                For j = 0 To Asc(FEN(i)) - 49
+                    Board(xcount + j, ycount) = " "c
+                Next
+                xcount += Asc(FEN(i)) - 49 'look at this later
+            End If
+
+            If FEN(i) = "/"c Then
+                ycount += 1
+                xcount = 1
+            Else
+                xcount += 1
+            End If
+            i += 1
+            If ycount = 9 Then isOk = True
+            'DrawBoard(Board, " ")
+        End While
+        WriteLine(FEN(i))
+        Return Board
+    End Function

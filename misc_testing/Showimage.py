@@ -10,7 +10,7 @@ Y = 1000
 
 
 image = pygame.image.load(
-    r'/Users/maxscullion/Projects/PygameChess/bishopjpg.jpeg')
+    r'/Users/maxscullion/Projects/PygameChess/classic_hq/b_bishop.png')
 display_surface = pygame.display.set_mode((X, Y))
 
 k = pygame.Surface.get_at(image, (620, 636))

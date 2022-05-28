@@ -1,5 +1,6 @@
 import string
 import pygame as pg
+import numpy as np
 
 BLACK = (118, 150, 86)
 WHITE = (238, 238, 210)
@@ -36,26 +37,39 @@ class Position:
             'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/')
 
     def FEN_to_board(FEN: string):
-        temp_board = [[0] * 9] * 9
+        temp_board = np.zeros([9, 9], dtype='S1')
         Xcount = 1
         Ycount = 1
         i = 0
+        final_rank = False
+        finished_iterating = False
 
-        while Ycount != 9:
-            print(i)
-            if not FEN[i] == '/':
-                temp_board[Xcount][Ycount] = FEN[i]
+        while finished_iterating == False:
+            is_num = False
 
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:
+                is_num = True
                 for j in range(0, ord(FEN[i]) - 48):
-                    temp_board[Xcount + j][Ycount] = 'e'
-                Xcount += ord(FEN[i]) - 48
+                    temp_board[Ycount, Xcount+j] = 'e'
+                Xcount += ord(FEN[i]) - 49
 
-            if FEN[i] == '/':
-                Ycount += 1
+            if not FEN[i] == '/' and not is_num:
+                # print("fen is {} at {}".format(FEN[i], i))
+                # print("X: {}  ||  Y: {}".format(Xcount, Ycount))
+                temp_board[Ycount, Xcount] = FEN[i]
+
+            if Xcount == 9:  # if at the end of the rank
+                Ycount += 1  # go to next one
                 Xcount = 1
             else:
                 Xcount += 1
+
+            if final_rank == True and Xcount == 9:  # has finished the entire board
+                finished_iterating = True
+
+            if Ycount == 8:
+                final_rank = True
+
             i += 1
         return temp_board
 

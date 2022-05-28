@@ -44,7 +44,7 @@ class Position:
         final_rank = False
         finished_iterating = False
 
-        while finished_iterating == False:
+        while not finished_iterating:
             is_num = False
 
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:

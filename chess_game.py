@@ -1,5 +1,4 @@
 import string
-from tkinter.tix import IMAGE
 import pygame as pg
 import numpy as np
 import random
@@ -12,10 +11,22 @@ WINDOW_SIZE = (600 // BOARD_SIZE) * BOARD_SIZE
 BLOCK_SIZE = WINDOW_SIZE / BOARD_SIZE
 FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 IMAGES = {}
-
+PIECE_SYMBOL_TO_TYPE = {
+    'b': 'b_bishop', 'k': 'b_king', 'n': 'b_knight', 'p': 'b_pawn', 'q': 'b_queen', 'r': 'b_rook',
+    'B': 'w_bishop', 'K': 'w_king', 'N': 'w_knight', 'P': 'w_pawn', 'Q': 'w_queen', 'R': 'w_rook'}
 # (9,10) is the center of square 1 with the blocksize being 75
-#9 , 84, 157.5
-#10, 85,
+
+
+def coords(Coordinates):
+    rank = ((ord(Coordinates[0].upper()) - 64) * 75) - 66
+    file = ((9-int(Coordinates[1])) * 75) - 65
+
+    if ord(Coordinates[0].upper()) - 64 < 1 or ord(Coordinates[0].upper()) - 64 > 8:
+        raise Exception('Invalid rank')
+    elif int(Coordinates[1]) < 1 or int(Coordinates[1]) > 8:
+        raise Exception('inalid file')
+
+    return rank, file
 
 
 class Player:
@@ -53,7 +64,7 @@ class Position:
         while not finished_iterating:
             is_num = False
 
-            if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:
+            if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 1 and 8
                 is_num = True
                 for j in range(0, ord(FEN[i]) - 48):
                     temp_board[Ycount, Xcount+j] = 'e'
@@ -115,13 +126,15 @@ class Graphics:
 
     # draw_piece('r',x,y)
 
-    def draw_piece(colour, piece_name, xytuple):
+    def draw_piece(piece_symbol, xytuple):
         x, y = xytuple
 
         if float.is_integer((x+66) / 75) == False or float.is_integer((y + 65) / 75) == False:
             raise Exception('Must be a valid coordinate')
 
-        SCREEN.blit(IMAGES[colour[0] + '_' + piece_name], (x, y))
+        piece_details = PIECE_SYMBOL_TO_TYPE[piece_symbol]
+
+        SCREEN.blit(IMAGES[piece_details], (x, y))
 
 
 if __name__ == "__main__":
@@ -136,7 +149,7 @@ if __name__ == "__main__":
     Graphics.draw_grid()
     Graphics.load_images()
 
-    Graphics.draw_piece('b', 'queen', (9, 160))
+    Graphics.draw_piece('b', coords('a1'))
 
     while run:
 

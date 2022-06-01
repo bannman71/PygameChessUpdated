@@ -2,7 +2,7 @@ import string
 import pygame as pg
 import numpy as np
 import Graphics
-
+import Board
 
 # makes window size a mulitple of board size (8)
 FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
@@ -38,8 +38,8 @@ class Position:
         while not finished_iterating:
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 0 and 8
                 for j in range(0, ord(FEN[i]) - 48):  # 0->7 maximum
-                    temp_board[Row, Col+j] = 'e'
-                Xcount += ord(FEN[i]) - 49
+                    temp_board[Row, Col + j] = 'e'
+                Col += ord(FEN[i]) - 49
             elif not FEN[i] == '/':
                 temp_board[Row, Col] = FEN[i]
 
@@ -49,10 +49,10 @@ class Position:
             else:
                 Col += 1
 
-            if final_rank == True and Row == 8:  # has finished the entire board
+            if final_rank == True and Col == 8:  # has finished the entire board
                 finished_iterating = True
 
-            if Col == 7:
+            if Row == 7:
                 final_rank = True
 
             i += 1
@@ -91,7 +91,6 @@ if __name__ == "__main__":
 
     Graphics.load_images()
     Graphics.draw_grid(SCREEN)
-    Graphics.draw_piece(SCREEN, 'Q', coords('a1'))
 
     testarr = SCREEN.copy()
 
@@ -110,7 +109,10 @@ if __name__ == "__main__":
                 mouse_down = False
 
         if mouse_down:
-            SCREEN.blit(testarr, (0, 0))
+
+            clicked_piece = Board.get_p(
+                position, pg.mouse.get_pos())
+            print(clicked_piece)
             Graphics.draw_piece_at_mousepos(SCREEN, 'r', pg.mouse.get_pos())
 
         # fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))

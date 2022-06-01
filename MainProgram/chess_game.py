@@ -22,7 +22,7 @@ def coords(Coordinates):
     if ord(Coordinates[0].upper()) - 64 < 1 or ord(Coordinates[0].upper()) - 64 > 8:
         raise Exception('Invalid rank')
     elif int(Coordinates[1]) < 1 or int(Coordinates[1]) > 8:
-        raise Exception('inalid file')
+        raise Exception('Invalid file')
 
     return rank, file
 
@@ -125,6 +125,9 @@ if __name__ == "__main__":
 
     testarr = SCREEN.copy()
 
+    testarr.convert()
+
+    pg.transform.scale(testarr, (WINDOW_SIZE, WINDOW_SIZE))
     while run:
 
         for event in pg.event.get():
@@ -138,9 +141,11 @@ if __name__ == "__main__":
         if mouse_down:
             x, y = event.pos
             SCREEN.blit(testarr, (0, 0))
-            Graphics.draw_piece_at_mousepos(SCREEN, 'r', (x, y))
+            Graphics.draw_piece_at_mousepos(SCREEN, 'n', (x, y))
 
-        fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))
-        SCREEN.blit(fps, (50, 50))
+        # fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))
+        # SCREEN.blit(fps, (50, 50))
 
         pg.display.flip()
+
+    pg.quit()

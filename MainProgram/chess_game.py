@@ -2,17 +2,15 @@ import string
 import pygame as pg
 import numpy as np
 import Graphics
-
+import Board
 
 # makes window size a mulitple of board size (8)
 FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
-
 
 clock = pg.time.Clock()
 # (9,10) is the center of square 1 with the blocksize being 75
 
 class Position:
-
     pos = [[' '] * 8  for i in range(8)]
 
     # //////
@@ -84,11 +82,6 @@ class Board:
         rank = (y + 65) / 75
 
 
-# //////
-# HOW TO DETECT MOUSE POSITION AND WHAT COORDINATE ITS IN
-# when clicked, divide coords by boardsize and always round down
-# //////
-
 if __name__ == "__main__":
     global SCREEN
     pg.init()
@@ -102,17 +95,14 @@ if __name__ == "__main__":
     position = Position()
 
     Graphics.load_images()
-
     Graphics.draw_grid(SCREEN)
 
     position.draw(SCREEN)
-
     testarr = SCREEN.copy()
-    
+
     run = True
     testarr.convert()
     pg.transform.scale(testarr, (Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
-    
     while run:
 
         for event in pg.event.get():
@@ -124,7 +114,10 @@ if __name__ == "__main__":
                 mouse_down = False
 
         if mouse_down:
-            SCREEN.blit(testarr, (0, 0))
+
+            clicked_piece = Board.get_p(
+                position, pg.mouse.get_pos())
+            print(clicked_piece)
             Graphics.draw_piece_at_mousepos(SCREEN, 'r', pg.mouse.get_pos())
 
         # fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))

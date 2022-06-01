@@ -2,7 +2,6 @@ import pygame as pg
 import numpy as np
 
 IMAGES = {}
-
 BLACK = (140, 162, 173)
 WHITE = (222, 227, 230)
 BOARD_SIZE = 8

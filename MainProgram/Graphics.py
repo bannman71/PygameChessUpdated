@@ -3,8 +3,8 @@ import numpy as np
 
 IMAGES = {}
 
-BLACK = (118, 150, 86)
-WHITE = (238, 238, 210)
+BLACK = (140, 162, 173)
+WHITE = (222, 227, 230)
 BOARD_SIZE = 8
 # makes window size a mulitple of board size (8)
 WINDOW_SIZE = (600 // BOARD_SIZE) * BOARD_SIZE
@@ -21,7 +21,7 @@ PIECES = ['b_bishop', 'b_king', 'b_knight', 'b_pawn', 'b_queen', 'b_rook',
 def load_images():
     for im in PIECES:
         IMAGES[im] = (pg.transform.smoothscale(
-            pg.image.load("/Users/maxscullion/Projects/PygameChess/classic_hq/" + im + ".png"), (BLOCK_SIZE * 0.75, BLOCK_SIZE * 0.75)))
+            pg.image.load("../classic_hq/" + im + ".png"), (BLOCK_SIZE * 0.75, BLOCK_SIZE * 0.75)))
 
 
 def draw_piece(surface, piece_symbol, Coordinates):
@@ -36,21 +36,16 @@ def draw_piece(surface, piece_symbol, Coordinates):
 
 
 def draw_grid(surface):
-    for y in range(0, BOARD_SIZE):
-        for x in range(0, BOARD_SIZE//2):
-            rect = pg.Rect(
-                (x*2 + ((y + 1) % 2)) * BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
-            pg.draw.rect(surface, WHITE, rect, 64)
+   for y in range(0, BOARD_SIZE):
+       for x in range(0, BOARD_SIZE//2):
+            pg.draw.rect(surface, WHITE, pg.Rect(
+                (x*2 + ((y + 1) % 2)) * BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
 
 
 def draw_piece_at_mousepos(surface, piece_symbol, coords):
     x, y = coords
-
-    img = IMAGES['b_bishop']
-
-    # # Draw rectangle around the image
-    # rect = img.get_rect()
-    # rect.center = 50, 50
-    surface.blit(img, (x, y))
+    x -= BLOCK_SIZE * 0.375 # centers piece
+    y -= BLOCK_SIZE * 0.375
+    surface.blit(IMAGES['b_bishop'], (min(WINDOW_SIZE - BLOCK_SIZE + 10, max(9, x)), min(WINDOW_SIZE - BLOCK_SIZE + 10, max(9, y))))
 
 

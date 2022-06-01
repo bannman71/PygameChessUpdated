@@ -3,8 +3,8 @@ import pygame as pg
 import numpy as np
 import Graphics
 
-BLACK = (140, 162, 173)
-WHITE = (222, 227, 230)
+BLACK = (118, 150, 86)
+WHITE = (238, 238, 210)
 BOARD_SIZE = 8
 # makes window size a mulitple of board size (8)
 WINDOW_SIZE = (600 // BOARD_SIZE) * BOARD_SIZE
@@ -22,7 +22,7 @@ def coords(Coordinates):
     if ord(Coordinates[0].upper()) - 64 < 1 or ord(Coordinates[0].upper()) - 64 > 8:
         raise Exception('Invalid rank')
     elif int(Coordinates[1]) < 1 or int(Coordinates[1]) > 8:
-        raise Exception('inalid file')
+        raise Exception('Invalid file')
 
     return rank, file
 
@@ -103,11 +103,6 @@ class Board:
         rank = (y + 65) / 75
 
 
-# //////
-# HOW TO DETECT MOUSE POSITION AND WHAT COORDINATE ITS IN
-# when clicked, divide coords by boardsize and always round down
-# //////
-
 if __name__ == "__main__":
     global SCREEN
     pg.init()
@@ -117,6 +112,8 @@ if __name__ == "__main__":
 
     SCREEN = pg.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
     SCREEN.fill(BLACK)
+
+    run = True
 
     position = Position().returned_position
 
@@ -128,7 +125,9 @@ if __name__ == "__main__":
 
     testarr = SCREEN.copy()
 
-    run = True
+    testarr.convert()
+
+    pg.transform.scale(testarr, (WINDOW_SIZE, WINDOW_SIZE))
     while run:
 
         for event in pg.event.get():
@@ -140,11 +139,13 @@ if __name__ == "__main__":
                 mouse_down = False
 
         if mouse_down:
+            x, y = event.pos
             SCREEN.blit(testarr, (0, 0))
-            Graphics.draw_piece_at_mousepos(SCREEN, 'r', pg.mouse.get_pos())
+            Graphics.draw_piece_at_mousepos(SCREEN, 'n', (x, y))
 
         # fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))
         # SCREEN.blit(fps, (50, 50))
 
         pg.display.flip()
+
     pg.quit()

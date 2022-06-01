@@ -7,11 +7,11 @@ import Board
 # makes window size a mulitple of board size (8)
 FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 
-clock = pg.time.Clock()
 # (9,10) is the center of square 1 with the blocksize being 75
 
+
 class Position:
-    pos = [[' '] * 8  for i in range(8)]
+    pos = [[' '] * 8 for i in range(8)]
 
     # //////
     # if constructor is empty then the starting position is made
@@ -25,15 +25,15 @@ class Position:
             self.pos = Position.FEN_to_board(
                 FEN_STARTING_BOARD)  # if parameter has been left empty
 
-    def draw(self, surface):
-        print(self.pos)
+    def draw(self):
         for row in range(8):
             for col in range(8):
                 if self.pos[row][col] != "e":
-                    Graphics.draw_piece(SCREEN, self.pos[row][col], (col, row)) # notice row column is flipped for the graphical position beacuase x = col and y = row
+                    # notice row column is flipped for the graphical position beacuase x = col and y = row
+                    Graphics.draw_piece(SCREEN, self.pos[row][col], (col, row))
 
     def FEN_to_board(FEN: string):
-        temp_board = [[' '] * 8  for i in range(8)]
+        temp_board = [[' '] * 8 for i in range(8)]
         col = 0
         row = 0
         i = 0
@@ -44,8 +44,6 @@ class Position:
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 0 and 8
                 for j in range(0, ord(FEN[i]) - 48):  # 0->7 maximum
                     temp_board[row][col + j] = 'e'
-
-
                 col += ord(FEN[i]) - 49
             elif not FEN[i] == '/':
                 temp_board[row][col] = FEN[i]
@@ -54,7 +52,7 @@ class Position:
                 row += 1  # go to next one
                 col = 0
             else:
-                col+=1
+                col += 1
 
             if final_rank == True and col == 8:  # has finished the entire board
                 finished_iterating = True
@@ -70,8 +68,6 @@ if __name__ == "__main__":
     global SCREEN
     pg.init()
     mouse_down = False
-
-    font = pg.font.SysFont("Arial", 18)
 
     SCREEN = pg.display.set_mode((Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
     SCREEN.fill(Graphics.BLACK)
@@ -94,18 +90,15 @@ if __name__ == "__main__":
                 run = False
             elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_down = True
+                clicked_piece = Board.get_piece_at_clicked_location(
+                    position.pos, pg.mouse.get_pos())
             elif event.type == pg.MOUSEBUTTONUP:
                 mouse_down = False
 
         if mouse_down:
-
-            clicked_piece = Board.get_piece_at_clicked_location(
-                position, pg.mouse.get_pos())
-            print(clicked_piece)
-            Graphics.draw_piece_at_mousepos(SCREEN, 'r', pg.mouse.get_pos())
-
-        # fps = font.render(str(int(clock.get_fps())), True, pg.Color('white'))
-        # SCREEN.blit(fps, (50, 50))
+            SCREEN.blit(testarr, (0, 0))
+            Graphics.draw_piece_at_mousepos(
+                SCREEN, clicked_piece, pg.mouse.get_pos())
 
         pg.display.flip()
     pg.quit()

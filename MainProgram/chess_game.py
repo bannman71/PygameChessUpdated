@@ -22,7 +22,7 @@ def coords(Coordinates):
     if ord(Coordinates[0].upper()) - 64 < 1 or ord(Coordinates[0].upper()) - 64 > 8:
         raise Exception('Invalid rank')
     elif int(Coordinates[1]) < 1 or int(Coordinates[1]) > 8:
-        raise Exception('inalid file')
+        raise Exception('Invalid file')
 
     return rank, file
 
@@ -127,8 +127,11 @@ if __name__ == "__main__":
     Graphics.draw_piece(SCREEN, 'Q', coords('b2'))
 
     testarr = SCREEN.copy()
-
+    
     run = True
+    testarr.convert()
+    pg.transform.scale(testarr, (WINDOW_SIZE, WINDOW_SIZE))
+    
     while run:
 
         for event in pg.event.get():

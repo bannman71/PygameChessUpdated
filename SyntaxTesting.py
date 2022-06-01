@@ -6,7 +6,7 @@ import numpy as np
 
 class Position:
 
-    _returned_position = [[0]*8]*8
+    _returned_position = np.array([9, 9])
 
     # //////
     # if constructor is empty then the starting position is made

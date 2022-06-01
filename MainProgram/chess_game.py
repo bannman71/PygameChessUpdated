@@ -103,12 +103,6 @@ class Board:
         rank = (y + 65) / 75
 
 
-# //////
-# HOW TO DETECT MOUSE POSITION AND WHAT COORDINATE ITS IN
-# when clicked, divide coords by boardsize and always round down
-# //////
-
-
 if __name__ == "__main__":
     global SCREEN
     pg.init()

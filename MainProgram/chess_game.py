@@ -11,18 +11,6 @@ clock = pg.time.Clock()
 # (9,10) is the center of square 1 with the blocksize being 75
 
 
-def coords(Coordinates):
-    file = ((ord(Coordinates[0].upper()) - 65) * 75) - 66
-    rank = ((8-int(Coordinates[1])) * 75) - 65
-
-    if ord(Coordinates[0].upper()) - 64 < 0 or ord(Coordinates[0].upper()) - 64 > 7:
-        raise Exception('Invalid rank')
-    elif int(Coordinates[1]) < 0 or int(Coordinates[1]) > 8:
-        raise Exception('Invalid file')
-
-    return file, rank
-
-
 class Position:
 
     pos = np.array([8, 8], dtype='S1')
@@ -41,8 +29,8 @@ class Position:
 
     def FEN_to_board(FEN: string):
         temp_board = np.zeros([8, 8], dtype='S1')
-        Xcount = 0
-        Ycount = 0
+        Row = 0
+        Col = 0
         i = 0
         final_rank = False
         finished_iterating = False
@@ -50,21 +38,21 @@ class Position:
         while not finished_iterating:
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 0 and 8
                 for j in range(0, ord(FEN[i]) - 48):  # 0->7 maximum
-                    temp_board[Ycount, Xcount+j] = 'e'
+                    temp_board[Row, Col+j] = 'e'
                 Xcount += ord(FEN[i]) - 49
             elif not FEN[i] == '/':
-                temp_board[Ycount, Xcount] = FEN[i]
+                temp_board[Row, Col] = FEN[i]
 
-            if Xcount == 8:  # if at the end of the rank
-                Ycount += 1  # go to next one
-                Xcount = 0
+            if Col == 8:  # if at the end of the rank
+                Row += 1  # go to next one
+                Col = 0
             else:
-                Xcount += 1
+                Col += 1
 
-            if final_rank == True and Xcount == 8:  # has finished the entire board
+            if final_rank == True and Row == 8:  # has finished the entire board
                 finished_iterating = True
 
-            if Ycount == 7:
+            if Col == 7:
                 final_rank = True
 
             i += 1
@@ -103,7 +91,7 @@ if __name__ == "__main__":
 
     Graphics.load_images()
     Graphics.draw_grid(SCREEN)
-    Graphics.draw_piece(SCREEN, 'Q', coords('b2'))
+    Graphics.draw_piece(SCREEN, 'Q', coords('a1'))
 
     testarr = SCREEN.copy()
 

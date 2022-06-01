@@ -10,10 +10,8 @@ FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
 clock = pg.time.Clock()
 # (9,10) is the center of square 1 with the blocksize being 75
 
-
 class Position:
-
-    pos = np.array([8, 8], dtype='S1')
+    pos = [[' '] * 8  for i in range(8)]
 
     # //////
     # if constructor is empty then the starting position is made
@@ -27,10 +25,17 @@ class Position:
             self.pos = Position.FEN_to_board(
                 FEN_STARTING_BOARD)  # if parameter has been left empty
 
+    def draw(self, surface):
+        print(self.pos)
+        for row in range(8):
+            for col in range(8):
+                if self.pos[row][col] != "e":
+                    Graphics.draw_piece(SCREEN, self.pos[row][col], (col, row)) # notice row column is flipped for the graphical position beacuase x = col and y = row
+
     def FEN_to_board(FEN: string):
-        temp_board = np.zeros([8, 8], dtype='S1')
-        Row = 0
-        Col = 0
+        temp_board = [[' '] * 8  for i in range(8)]
+        col = 0
+        row = 0
         i = 0
         final_rank = False
         finished_iterating = False
@@ -38,21 +43,23 @@ class Position:
         while not finished_iterating:
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 0 and 8
                 for j in range(0, ord(FEN[i]) - 48):  # 0->7 maximum
-                    temp_board[Row, Col + j] = 'e'
-                Col += ord(FEN[i]) - 49
+                    temp_board[row][col + j] = 'e'
+
+
+                col += ord(FEN[i]) - 49
             elif not FEN[i] == '/':
-                temp_board[Row, Col] = FEN[i]
+                temp_board[row][col] = FEN[i]
 
-            if Col == 8:  # if at the end of the rank
-                Row += 1  # go to next one
-                Col = 0
+            if col == 8:  # if at the end of the rank
+                row += 1  # go to next one
+                col = 0
             else:
-                Col += 1
+                col+=1
 
-            if final_rank == True and Col == 8:  # has finished the entire board
+            if final_rank == True and col == 8:  # has finished the entire board
                 finished_iterating = True
 
-            if Row == 7:
+            if row == 7:
                 final_rank = True
 
             i += 1
@@ -82,22 +89,20 @@ if __name__ == "__main__":
 
     font = pg.font.SysFont("Arial", 18)
 
-    SCREEN = pg.display.set_mode(
-        (Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
+    SCREEN = pg.display.set_mode((Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
     SCREEN.fill(Graphics.BLACK)
 
     position = Position()
-    print(position.pos)
 
     Graphics.load_images()
     Graphics.draw_grid(SCREEN)
 
+    position.draw(SCREEN)
     testarr = SCREEN.copy()
 
     run = True
     testarr.convert()
     pg.transform.scale(testarr, (Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
-
     while run:
 
         for event in pg.event.get():

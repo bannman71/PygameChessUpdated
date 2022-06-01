@@ -3,35 +3,25 @@ import pygame as pg
 import numpy as np
 import Graphics
 
-BLACK = (140, 162, 173)
-WHITE = (222, 227, 230)
-BOARD_SIZE = 8
-# makes window size a mulitple of board size (8)
-WINDOW_SIZE = (600 // BOARD_SIZE) * BOARD_SIZE
 
+# makes window size a mulitple of board size (8)
 FEN_STARTING_BOARD = str("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+
 
 clock = pg.time.Clock()
 # (9,10) is the center of square 1 with the blocksize being 75
 
 
 def coords(Coordinates):
-    rank = ((ord(Coordinates[0].upper()) - 64) * 75) - 66
-    file = ((9-int(Coordinates[1])) * 75) - 65
+    file = ((ord(Coordinates[0].upper()) - 64) * 75) - 66
+    rank = ((9-int(Coordinates[1])) * 75) - 65
 
     if ord(Coordinates[0].upper()) - 64 < 1 or ord(Coordinates[0].upper()) - 64 > 8:
         raise Exception('Invalid rank')
     elif int(Coordinates[1]) < 1 or int(Coordinates[1]) > 8:
         raise Exception('Invalid file')
 
-    return rank, file
-
-
-class Player:
-    _player1 = "white"
-    _player2 = "black"
-    empty = -1
-
+    return file, rank
 
 class Position:
 
@@ -58,19 +48,14 @@ class Position:
         finished_iterating = False
 
         while not finished_iterating:
-            is_num = False
 
             if ord(FEN[i]) - 48 > 0 and ord(FEN[i]) - 48 <= 8:  # if is a number between 1 and 8
-                is_num = True
                 for j in range(0, ord(FEN[i]) - 48):
                     temp_board[Ycount, Xcount+j] = 'e'
                 Xcount += ord(FEN[i]) - 49
-
-            if not FEN[i] == '/' and not is_num:
-                # print("fen is {} at {}".format(FEN[i], i))
-                # print("X: {}  ||  Y: {}".format(Xcount, Ycount))
+            elif not FEN[i] == '/':
                 temp_board[Ycount, Xcount] = FEN[i]
-
+          
             if Xcount == 9:  # if at the end of the rank
                 Ycount += 1  # go to next one
                 Xcount = 1
@@ -115,8 +100,8 @@ if __name__ == "__main__":
 
     font = pg.font.SysFont("Arial", 18)
 
-    SCREEN = pg.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
-    SCREEN.fill(BLACK)
+    SCREEN = pg.display.set_mode((Graphics.WINDOWS_SIZE, Graphics.WINDOWS_SIZE))
+    SCREEN.fill(Graphics.BLACK)
 
     position = Position().returned_position
 
@@ -130,7 +115,7 @@ if __name__ == "__main__":
     
     run = True
     testarr.convert()
-    pg.transform.scale(testarr, (WINDOW_SIZE, WINDOW_SIZE))
+    pg.transform.scale(testarr, (Graphics.WINDOWS_SIZE, Graphics.WINDOWS_SIZE))
     
     while run:
 

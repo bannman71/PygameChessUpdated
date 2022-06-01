@@ -59,22 +59,6 @@ class Position:
         return temp_board
 
 
-class Board:
-
-    _board = np.zeros([8, 8], dtype='S1')
-
-    def __init__(self, Position):  # pass in a 2d array for position
-        self._board = Position
-
-    def square_location(self):
-        print(self._board)
-
-    def get_clicked_square(event_coords):
-        x, y = event_coords
-        file = (x + 66) / 75
-        rank = (y + 65) / 75
-
-
 if __name__ == "__main__":
     global SCREEN
     pg.init()
@@ -110,7 +94,7 @@ if __name__ == "__main__":
 
         if mouse_down:
 
-            clicked_piece = Board.get_p(
+            clicked_piece = Board.get_piece_at_clicked_location(
                 position, pg.mouse.get_pos())
             print(clicked_piece)
             Graphics.draw_piece_at_mousepos(SCREEN, 'r', pg.mouse.get_pos())

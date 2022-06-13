@@ -1,6 +1,6 @@
+from pydoc import Helper
 import string
 import pygame as pg
-import numpy as np
 import Graphics
 import Board
 
@@ -29,8 +29,15 @@ class Position:
         for row in range(8):
             for col in range(8):
                 if self.pos[row][col] != "e":
-                    # notice row column is flipped for the graphical position beacuase x = col and y = row
+                    # notice row column is flipped for the graphical position because x = col and y = row
                     Graphics.draw_piece(SCREEN, self.pos[row][col], (col, row))
+
+    def update(self, clicked_piece, sCoords, dCoords):
+        sCol, sRow = sCoords
+        dCol, dRow = dCoords
+
+        self.pos[sRow][sCol] = 'e'
+        self.pos[dRow][dCol] = clicked_piece
 
     def FEN_to_board(FEN: string):
         temp_board = [[' '] * 8 for i in range(8)]
@@ -68,21 +75,24 @@ if __name__ == "__main__":
     global SCREEN
     pg.init()
     mouse_down = False
+    start_clicked_square = 0
+    destination_clicked_square = 0
 
     SCREEN = pg.display.set_mode((Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
     SCREEN.fill(Graphics.BLACK)
 
+    Graphics.draw_grid(SCREEN)
+    empty_board = SCREEN.copy()
+
     position = Position()
 
     Graphics.load_images()
-    Graphics.draw_grid(SCREEN)
 
-    position.draw(SCREEN)
-    testarr = SCREEN.copy()
+    position.draw()
+    current_pos = SCREEN.copy()
 
     run = True
-    testarr.convert()
-    pg.transform.scale(testarr, (Graphics.WINDOW_SIZE, Graphics.WINDOW_SIZE))
+
     while run:
 
         for event in pg.event.get():
@@ -92,11 +102,30 @@ if __name__ == "__main__":
                 mouse_down = True
                 clicked_piece = Board.get_piece_at_clicked_location(
                     position.pos, pg.mouse.get_pos())
+
+                start_clicked_square = Board.get_coord_at_click_location(
+                    pg.mouse.get_pos())
+
+                print(clicked_piece)
             elif event.type == pg.MOUSEBUTTONUP:
                 mouse_down = False
+                destination_clicked_square = Board.get_coord_at_click_location(
+                    pg.mouse.get_pos())
 
-        if mouse_down:
-            SCREEN.blit(testarr, (0, 0))
+                print(Board.legal_moves(clicked_piece).is_legal(
+                    start_clicked_square, destination_clicked_square))
+
+                if Board.legal_moves(clicked_piece).is_legal(start_clicked_square, destination_clicked_square) == True:
+
+                    position.update(
+                        clicked_piece, start_clicked_square, destination_clicked_square)
+
+                SCREEN.blit(empty_board, (0, 0))
+                position.draw()
+                current_pos = SCREEN.copy()
+
+        if mouse_down and clicked_piece != 'e':
+            SCREEN.blit(current_pos, (0, 0))
             Graphics.draw_piece_at_mousepos(
                 SCREEN, clicked_piece, pg.mouse.get_pos())
 

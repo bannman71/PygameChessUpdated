@@ -68,3 +68,13 @@ for x in range(1, 9):
     for y in range(1, 9):
         print(position[x][y], end=' ')
     print()
+
+
+arr = [[1, 5], [2, 1]]
+
+
+def stuff(arr):
+    pass
+
+
+stuff(arr[0][1])

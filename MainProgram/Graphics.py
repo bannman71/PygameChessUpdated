@@ -21,6 +21,7 @@ def load_images():
         IMAGES[im] = (pg.transform.smoothscale(
             pg.image.load("./classic_hq/" + PIECES[im] + ".png").convert_alpha(), (BLOCK_SIZE * PIECE_SCALE, BLOCK_SIZE * PIECE_SCALE)))
 
+
 def draw_piece(surface, piece_symbol, Coordinates):
     x, y = Coordinates
 

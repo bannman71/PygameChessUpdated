@@ -94,29 +94,24 @@ if __name__ == "__main__":
     run = True
 
     while run:
-
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 run = False
             elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_down = True
+
                 clicked_piece = Board.get_piece_at_clicked_location(
                     position.pos, pg.mouse.get_pos())
 
                 start_clicked_square = Board.get_coord_at_click_location(
                     pg.mouse.get_pos())
 
-                print(clicked_piece)
             elif event.type == pg.MOUSEBUTTONUP:
                 mouse_down = False
                 destination_clicked_square = Board.get_coord_at_click_location(
                     pg.mouse.get_pos())
 
-                print(Board.legal_moves(clicked_piece).is_legal(
-                    start_clicked_square, destination_clicked_square))
-
                 if Board.legal_moves(clicked_piece).is_legal(start_clicked_square, destination_clicked_square) == True:
-
                     position.update(
                         clicked_piece, start_clicked_square, destination_clicked_square)
 

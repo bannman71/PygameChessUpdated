@@ -1,5 +1,5 @@
 import pygame as pg
-from sqlalchemy import true
+from operator import xor
 
 
 def get_piece_at_clicked_location(position, clicked_coords):
@@ -43,6 +43,12 @@ class legal_moves():
             if abs(dCol - sCol) == 2 and abs(dRow-sRow) == 1:
                 return True
             elif abs(dRow - sRow) == 2 and abs(dCol-sCol) == 1:
+                return True
+        elif self._piece_to_move.lower() == 'q':  # queen
+            if abs(dCol-sCol) == abs(dRow-sRow) or (sCol == dCol or sRow == dRow):
+                return True
+        elif self._piece_to_move.lower() == 'k':  # king
+            if not abs(dRow - sRow) > 1 and not abs(dCol - sCol) > 1:
                 return True
 
         # /////

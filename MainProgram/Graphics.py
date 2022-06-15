@@ -42,5 +42,5 @@ def draw_piece_at_mousepos(surface, piece_symbol, coords):
     x, y = coords
     x -= BLOCK_SIZE * PIECE_SCALE / 2  # centers piece
     y -= BLOCK_SIZE * PIECE_SCALE / 2
-    surface.blit(IMAGES[piece_symbol], (min(WINDOW_SIZE - BLOCK_SIZE +
-                 SPACING, max(SPACING, x)), min(WINDOW_SIZE - BLOCK_SIZE + SPACING, max(SPACING, y))))
+    surface.blit(IMAGES[piece_symbol], 
+        (min(WINDOW_SIZE - BLOCK_SIZE +SPACING, max(SPACING, x)), min(WINDOW_SIZE - BLOCK_SIZE + SPACING, max(SPACING, y))))

@@ -12,8 +12,16 @@ PIECE_SCALE = 0.75
 SPACING = (BLOCK_SIZE * (1 - PIECE_SCALE)) // 2
 
 PIECES = {
-    'b': 'b_bishop', 'k': 'b_king', 'n': 'b_knight', 'p': 'b_pawn', 'q': 'b_queen', 'r': 'b_rook',
+   'b': 'b_bishop', 'k': 'b_king', 'n': 'b_knight', 'p': 'b_pawn', 'q': 'b_queen', 'r': 'b_rook',
     'B': 'w_bishop', 'K': 'w_king', 'N': 'w_knight', 'P': 'w_pawn', 'Q': 'w_queen', 'R': 'w_rook'}
+
+# BIN_PIECES =  {
+#     20: 'b_bishop', 17: 'b_king', 19: 'b_knight', 18: 'b_pawn', 22: 'b_queen', 21: 'b_rook',
+#     12: 'w_bishop', 9: 'w_king', 11: 'w_knight', 10: 'w_pawn', 14: 'w_queen', 13: 'w_rook'}
+
+BIN_PIECES =  {
+    20: 'b', 17: 'k', 19: 'n', 18: 'p', 22: 'q', 21: 'r',
+    12: 'B', 9: 'K', 11: 'N', 10: 'P', 14: 'Q', 13: 'R'}
 
 
 def load_images():
@@ -22,13 +30,13 @@ def load_images():
             pg.image.load("./classic_hq/" + PIECES[im] + ".png").convert_alpha(), (BLOCK_SIZE * PIECE_SCALE, BLOCK_SIZE * PIECE_SCALE)))
 
 
-def draw_piece(surface, piece_symbol, Coordinates):
+def draw_piece(surface, piece_number, Coordinates):
     x, y = Coordinates
 
     x = SPACING + x * BLOCK_SIZE
     y = SPACING + y * BLOCK_SIZE
 
-    surface.blit(IMAGES[piece_symbol], (x, y))
+    surface.blit(IMAGES[BIN_PIECES[piece_number]], (x, y))
 
 
 def draw_grid(surface):
@@ -38,9 +46,9 @@ def draw_grid(surface):
                 (x*2 + ((y + 1) % 2)) * BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
 
 
-def draw_piece_at_mousepos(surface, piece_symbol, coords):
+def draw_piece_at_mousepos(surface, piece_number, coords):
     x, y = coords
     x -= BLOCK_SIZE * PIECE_SCALE / 2  # centers piece
     y -= BLOCK_SIZE * PIECE_SCALE / 2
-    surface.blit(IMAGES[piece_symbol], 
+    surface.blit(IMAGES[BIN_PIECES[piece_number]], 
         (min(WINDOW_SIZE - BLOCK_SIZE +SPACING, max(SPACING, x)), min(WINDOW_SIZE - BLOCK_SIZE + SPACING, max(SPACING, y))))

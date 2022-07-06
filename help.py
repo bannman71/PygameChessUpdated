@@ -19,3 +19,20 @@ print(float.is_integer((157.5 + 67.5) / 75))
 rank = ((ord('A') - 64) * 75) - 66
 print(ord('A'))
 print(rank)
+
+
+for i in range(8,-1,-1):
+    print(i)
+
+
+a = 16
+b = 8
+
+a = a^b
+
+
+
+
+print(a)
+
+

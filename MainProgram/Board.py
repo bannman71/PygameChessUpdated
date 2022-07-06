@@ -98,8 +98,9 @@ class Position:
 class legal_moves():
     _piece_to_move = 0
 
-    def __init__(self, piece_to_move) -> None:
+    def __init__(self, piece_to_move,position) -> None:
         self._piece_to_move = piece_to_move
+        self._position = position
 
     # start_coords is tuple (x,y) from pygame event so flip sRow/sCol, same with dest_coords
     def is_legal(self, start_coords, dest_coords):
@@ -111,7 +112,7 @@ class legal_moves():
             return False
 
         if uncoloured_piece == 5:  # rook
-            if (sCol == dCol or sRow == dRow):
+            if (sCol == dCol or sRow == dRow) and dRow in self.legal_file_squares(start_coords,self._position):
                 return True
         elif uncoloured_piece == 4:  # bishop
             if abs(dCol-sCol) == abs(dRow-sRow):

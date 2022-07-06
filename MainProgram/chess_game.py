@@ -36,13 +36,11 @@ if __name__ == "__main__":
 
                 start_clicked_square = Board.get_coord_at_click_location(pg.mouse.get_pos())
 
-                print(Board.legal_moves(clicked_piece).legal_file_squares(start_clicked_square,position.pos))
-
             elif event.type == pg.MOUSEBUTTONUP:
                 mouse_down = False
                 destination_clicked_square = Board.get_coord_at_click_location(pg.mouse.get_pos())
 
-                if Board.legal_moves(clicked_piece).is_legal(start_clicked_square, destination_clicked_square) == True:
+                if Board.legal_moves(clicked_piece,position.pos).is_legal(start_clicked_square, destination_clicked_square) == True:
                     position.update(clicked_piece, start_clicked_square, destination_clicked_square)
 
                 SCREEN.blit(empty_board, (0, 0))

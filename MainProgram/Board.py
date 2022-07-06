@@ -168,7 +168,7 @@ class legal_moves():
             if position[i][Col] == 0: #if an empty square
                 legal_file_coords.append(i)
             else: #if a piece is on the square
-                if position[Row][Col] & position[i][Col] == 24: #if they're opposite colours
+                if (position[Row][Col] & 24) & (position[i][Col] & 24) == 0: #if they're opposite colours
                     legal_file_coords.append(i)
                 break
         
@@ -176,7 +176,7 @@ class legal_moves():
             if position[j][Col] == 0:
                 legal_file_coords.append(j)
             elif position[j][Col] != 0:
-                if position[Row][Col] & position[j][Col] == 24: #if they're opposite colours
+                if (position[Row][Col] & 24) & (position[j][Col] & 24) == 0: #if they're opposite colours
                     legal_file_coords.append(j)
                 break
 

@@ -14,7 +14,6 @@ if __name__ == "__main__":
     SCREEN.fill(Graphics.BLACK)
     Graphics.load_images()
 
-
     Graphics.draw_grid(SCREEN)
     empty_board = SCREEN.copy()
 
@@ -23,7 +22,6 @@ if __name__ == "__main__":
     position.draw(SCREEN)
     current_pos = SCREEN.copy()
 
-    
     run = True
     while run:
         for event in pg.event.get():
@@ -35,6 +33,7 @@ if __name__ == "__main__":
                 clicked_piece = Board.get_piece_at_clicked_location(position.pos, pg.mouse.get_pos())
 
                 start_clicked_square = Board.get_coord_at_click_location(pg.mouse.get_pos())
+                print(Board.legal_moves(clicked_piece,position.pos).legal_diagonal_squares(start_clicked_square))
 
             elif event.type == pg.MOUSEBUTTONUP:
                 mouse_down = False
